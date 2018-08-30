@@ -1,0 +1,22 @@
+.logo {
+    width: 120px;
+    height: 31px;
+    background: rgba(255, 255, 255, .2);
+    margin: 16px 24px 16px 0;
+    float: left;
+}
+
+.content {
+    padding: 0 2vw;
+    margin-top: 5vh;
+}
+
+.contentContainer {
+    background: white;
+    padding: 2vh;
+    min-height: 82vh;
+}
+
+.footer {
+    text-align: center;
+}
