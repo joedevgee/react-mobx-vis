@@ -4,43 +4,21 @@ import city from "./assets/city.jpg";
 
 const list = [
   {
-    name: "City",
-    description: "U.S. Cities by Data",
+    name: "Location",
+    path: "/geo",
+    description: "Data visualization by geography",
     image: city
   },
   {
-    name: "City",
-    description: "U.S. Cities by Data",
+    name: "Education",
+    path: "/education",
+    description: "U.S. Education by Data",
     image: city
   },
   {
-    name: "City",
-    description: "U.S. Cities by Data",
-    image: city
-  },
-  {
-    name: "City",
-    description: "U.S. Cities by Data",
-    image: city
-  },
-  {
-    name: "City",
-    description: "U.S. Cities by Data",
-    image: city
-  },
-  {
-    name: "City",
-    description: "U.S. Cities by Data",
-    image: city
-  },
-  {
-    name: "City",
-    description: "U.S. Cities by Data",
-    image: city
-  },
-  {
-    name: "City",
-    description: "U.S. Cities by Data",
+    name: "Employment",
+    path: "/employment",
+    description: "U.S. Employment by Data",
     image: city
   }
 ];
