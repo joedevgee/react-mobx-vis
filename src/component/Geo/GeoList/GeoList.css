@@ -1,0 +1,45 @@
+.listContainer {
+  background-color: #141b2e;
+  list-style: none;
+}
+
+.listInnerWrapper {
+  display: flex;
+  padding-bottom: 10vh;
+}
+
+.iconWrapper {
+  margin-right: 8vh;
+  color: #879bf5;
+  font-size: 2em;
+  display: flex;
+  align-items: center;
+}
+
+.titleWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleWrapper p {
+  margin: 0;
+}
+
+.listTitle {
+  color: white;
+  padding-top: 2vh;
+  font-size: 2em;
+  text-decoration: none;
+  transition: text-decoration 100ms;
+}
+
+/* Highlight when hover */
+
+.listInnerWrapper:hover .listTitle {
+  text-decoration: underline;
+}
+
+.listSubtitle {
+  color: #979aa2;
+  font-size: 0.7em;
+}

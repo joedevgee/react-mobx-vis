@@ -6,10 +6,23 @@ import styles from "./HomeNavList.css";
 
 const { Meta } = Card;
 
-const HomeNavList = () => {
-  const renderCard = (name: string, description: string, image: string) => {
+type Props = {
+  history: any
+};
+
+const HomeNavList = ({ history }: Props) => {
+  const renderCard = (
+    name: string,
+    path: string,
+    description: string,
+    image: string
+  ) => {
+    const clickHandler = () => {
+      history.push(path);
+    };
     return (
       <Col
+        key={path}
         className={styles.colContainer}
         xs={22}
         sm={22}
@@ -17,14 +30,14 @@ const HomeNavList = () => {
         lg={8}
         xl={5}
       >
-        <Card hoverable cover={<img alt={name} src={image} />}>
+        <Card onClick={clickHandler} cover={<img alt={name} src={image} />}>
           <Meta title={name} description={description} />
         </Card>
       </Col>
     );
   };
   const renderList = () =>
-    list.map(e => renderCard(e.name, e.description, e.image));
+    list.map(e => renderCard(e.name, e.path, e.description, e.image));
   return (
     <Row type="flex" justify="space-around">
       {renderList()}

@@ -1,0 +1,39 @@
+.layout {
+  background-color: #141b2e;
+}
+
+.sider {
+  overflow: hidden;
+}
+
+.header {
+  padding: 0;
+  background-color: #141b2e;
+}
+
+.logo {
+  width: 120px;
+  height: 31px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px 24px 16px 0;
+  float: left;
+}
+
+.trigger {
+  color: white;
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+.content {
+  padding: 0 2vw;
+  margin-top: 5vh;
+  min-height: 90vh;
+}
