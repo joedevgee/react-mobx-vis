@@ -11,17 +11,9 @@ import HomeNavList from "./component/HomeNavList/HomeNavList";
 import Geo from "./component/Geo/Geo";
 
 import styles from "./App.css";
-import { inject, observer } from "mobx-react";
-import type { GeoStore } from "./type/GeoType";
 
 const { Header, Content, Sider } = Layout;
-
-type Props = {
-  store: {
-    geoStore: GeoStore
-  }
-};
-
+type Props = {};
 type State = {
   collapsed: boolean
 };
@@ -61,12 +53,7 @@ class App extends React.Component<Props, State> {
               <Router>
                 <Switch>
                   <Route exact path="/" component={withRouter(HomeNavList)} />
-                  <Route
-                    path="/geo"
-                    render={({ match }) => (
-                      <Geo match={match} geoStore={this.props.store.geoStore} />
-                    )}
-                  />
+                  <Route path="/geo" component={Geo} />
                 </Switch>
               </Router>
             </Content>
@@ -77,4 +64,4 @@ class App extends React.Component<Props, State> {
   }
 }
 
-export default inject("store")(observer(App));
+export default App;
