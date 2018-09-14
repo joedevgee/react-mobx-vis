@@ -2,18 +2,17 @@
 import * as React from "react";
 import { Icon } from "antd";
 import { Link } from "react-router-dom";
-import { observer } from "mobx-react";
 import type { Match } from "../../../type/RouterType";
-import type { State, GeoStore } from "../../../type/GeoType";
+import type { State, LocationList } from "../../../type/GeoType";
 
 import styles from "./GeoList.css";
 
 type Props = {
   match: Match,
-  geoStore: GeoStore
+  list: LocationList
 };
 
-const GeoList = ({ match, geoStore }: Props) => {
+const GeoList = ({ match, list }: Props) => {
   const geoCategory = (level: string) => {
     let category = "";
     switch (level) {
@@ -44,9 +43,9 @@ const GeoList = ({ match, geoStore }: Props) => {
   };
   return (
     <ul className={styles.listContainer}>
-      {geoStore.stateList.map(el => renderGeoItem(el))}
+      {list.map(el => renderGeoItem(el))}
     </ul>
   );
 };
 
-export default observer(GeoList);
+export default GeoList;

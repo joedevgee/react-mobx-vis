@@ -1,8 +1,11 @@
+// @flow
 const apiUrl = "https://api.datausa.io";
 
-export const getStates = async () => {
+const getStates = async (payload: { limit: number, sumlevel: string }) => {
   const resp = await fetch(
-    `${apiUrl}/attrs/search/?limit=50&q&kind=geo&sumlevel=040`
+    `${apiUrl}/attrs/search/?limit=${payload.limit}&q&kind=geo&sumlevel=${
+      payload.sumlevel
+    }`
   );
   const data = await resp.json();
   const stateList = data.data.map(state => {
@@ -19,3 +22,9 @@ export const getStates = async () => {
   });
   return stateList;
 };
+
+const GeoApi = {
+  getStates
+};
+
+export default GeoApi;

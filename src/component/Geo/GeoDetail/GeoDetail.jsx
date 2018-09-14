@@ -1,13 +1,14 @@
-import * as React from 'react'
+// @flow
+import * as React from "react";
 
-import type {State} from '../../../type/GeoType';
+import type { State } from "../../../type/GeoType";
 
 type Props = {
   geo: State
-}
+};
 
-const GeoDetail = ({geo}:Props) => {
-  return <h1>{geo.display}</h1>
-}
+const GeoDetail = ({ geo }: Props) => {
+  return <h1>{geo.display}</h1>;
+};
 
-export default GeoDetail
+export default GeoDetail;
