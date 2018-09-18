@@ -1,5 +1,11 @@
 // @flow
+import type { GeoIncome } from "../type/GeoType";
 const apiUrl = "https://api.datausa.io";
+
+const camelCaseConverter = (value: string): string =>
+  value.replace(/_([a-z])/g, function(g) {
+    return g[1].toUpperCase();
+  });
 
 const getStates = async (payload: { limit: number, sumlevel: string }) => {
   const resp = await fetch(
@@ -23,8 +29,50 @@ const getStates = async (payload: { limit: number, sumlevel: string }) => {
   return stateList;
 };
 
+const incomeDataHelper = (data: {
+  data: Array<any>,
+  headers: Array<string>
+}): GeoIncome => {
+  const tranHeader = data.headers.map(h => camelCaseConverter(h));
+  return data.data.map(e => {
+    const incomeObject = {};
+    tranHeader.forEach((h, i) => {
+      incomeObject[h] = e[i];
+    });
+    return incomeObject;
+  });
+};
+
+const getGeoDetail = async (payload: {
+  type: string,
+  required: Array<string>,
+  sumlevel: string,
+  year?: Array<number>,
+  geo: string
+}) => {
+  const resp = await fetch(
+    `${apiUrl}/api/?show=geo&required=${payload.required.join(
+      ","
+    )}&sumlevel=${payload.sumlevel || "all"}&year=${
+      payload.year ? payload.year.join(",") : "all"
+    }&geo=${payload.geo}`
+  );
+  const data = await resp.json();
+  const geoDetail = {};
+  switch (payload.type) {
+    case "income":
+      // Set income for detail
+      geoDetail.income = incomeDataHelper(data);
+      break;
+    default:
+      console.error("The type is not specified: ", payload.type);
+  }
+  return geoDetail;
+};
+
 const GeoApi = {
-  getStates
+  getStates,
+  getGeoDetail
 };
 
 export default GeoApi;

@@ -4,8 +4,6 @@ import list from "./HomeNavList.content";
 import { Card, Row, Col } from "antd";
 import styles from "./HomeNavList.css";
 
-const { Meta } = Card;
-
 type Props = {
   history: any
 };
@@ -31,7 +29,7 @@ const HomeNavList = ({ history }: Props) => {
         xl={5}
       >
         <Card onClick={clickHandler} cover={<img alt={name} src={image} />}>
-          <Meta title={name} description={description} />
+          <Card.Meta title={name} description={description} />
         </Card>
       </Col>
     );

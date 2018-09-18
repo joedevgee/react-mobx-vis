@@ -5,6 +5,18 @@ export type GeoResponse = {
   headers: Array<string>
 };
 
+export type GeoIncome = Array<{
+  year: number,
+  geo: string,
+  income: number,
+  incomeMoe: number
+}>;
+
+export type GeoDetail = {
+  id: string,
+  income: GeoIncome
+};
+
 export type State = {
   id: string,
   name: string,
@@ -19,5 +31,6 @@ export type State = {
 export type LocationList = Array<State>;
 
 export type GeoStore = {
-  stateList: LocationList
+  stateList: LocationList,
+  detailList: Array<GeoDetail>
 };
