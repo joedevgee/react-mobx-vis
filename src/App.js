@@ -12,7 +12,6 @@ import Geo from "./component/Geo/Geo";
 
 import styles from "./App.css";
 
-const { Header, Content, Sider } = Layout;
 type Props = {};
 type State = {
   collapsed: boolean
@@ -33,30 +32,30 @@ class App extends React.Component<Props, State> {
     return (
       <React.Fragment>
         <Layout className={styles.layout}>
-          <Sider
+          <Layout.Sider
             className={styles.sider}
             trigger={null}
             collapsible
             collapsed={this.state.collapsed}
           >
             <div className={styles.logo} />
-          </Sider>
+          </Layout.Sider>
           <Layout className={styles.layout}>
-            <Header className={styles.header}>
+            <Layout.Header className={styles.header}>
               <Icon
                 className={styles.trigger}
                 type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
                 onClick={this.toggle}
               />
-            </Header>
-            <Content className={styles.content}>
+            </Layout.Header>
+            <Layout.Content className={styles.content}>
               <Router>
                 <Switch>
                   <Route exact path="/" component={withRouter(HomeNavList)} />
                   <Route path="/geo" component={Geo} />
                 </Switch>
               </Router>
-            </Content>
+            </Layout.Content>
           </Layout>
         </Layout>
       </React.Fragment>

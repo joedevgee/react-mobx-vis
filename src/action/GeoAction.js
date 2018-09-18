@@ -1,6 +1,6 @@
 // @flow
 
-import type { LocationList } from "../type/GeoType";
+import type { LocationList, GeoDetail } from "../type/GeoType";
 
 type GetGeoListAction = {
   type: "GET_GEO_LIST",
@@ -17,7 +17,30 @@ type SetStateListAction = {
   }
 };
 
-export type GeoAction = GetGeoListAction | SetStateListAction;
+type GetGeoDetailAction = {
+  type: "GET_GEO_DETAIL",
+  payload: {
+    type: "income",
+    required: Array<string>,
+    sumlevel: string,
+    year: Array<number> | null,
+    geo: string
+  }
+};
+
+type SetGeoDetailAction = {
+  type: "SET_GEO_DETAIL",
+  payload: {
+    id: string,
+    detail: GeoDetail
+  }
+};
+
+export type GeoAction =
+  | GetGeoListAction
+  | SetStateListAction
+  | GetGeoDetailAction
+  | SetGeoDetailAction;
 
 /**
  * Action to fetch a list of Geo locations. e.g. States, Metros
@@ -39,5 +62,43 @@ export const setStateList = (stateList: LocationList): SetStateListAction => ({
   type: "SET_STATE_LIST",
   payload: {
     stateList: stateList
+  }
+});
+
+/**
+ * Action to fetch detail of a specific geo location. e.g. California, New York
+ * @param {[string]} required [A list of params to include in the response]
+ * @param {string} sumlevel [e.g. "040" = State level]
+ * @param {[number]} year [e.g. [2011, 2012, 2013]. P.S. default is All]
+ * @param {string} geo [ID for the location, e.g. California = 04000US06]
+ */
+export const getGeoDetail = (
+  type: "income",
+  required: Array<string>,
+  sumlevel: string,
+  year: Array<number> | null,
+  geo: string
+): GetGeoDetailAction => ({
+  type: "GET_GEO_DETAIL",
+  payload: {
+    type: type,
+    required: required,
+    sumlevel: sumlevel,
+    year: year,
+    geo: geo
+  }
+});
+
+/**
+ * Action to set detail of Geo object (e.g. Income), after API return response
+ */
+export const setGeoDetail = (
+  id: string,
+  detail: GeoDetail
+): SetGeoDetailAction => ({
+  type: "SET_GEO_DETAIL",
+  payload: {
+    id: id,
+    detail: detail
   }
 });

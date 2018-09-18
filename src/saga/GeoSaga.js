@@ -19,6 +19,22 @@ function* fetchGeoList(action: GeoAction): Saga<void> {
   }
 }
 
+function* fetchGeoDetail(action: GeoAction): Saga<void> {
+  try {
+    const geoDetail = yield call(GeoApi.getGeoDetail, action.payload);
+    yield put({
+      type: "SET_GEO_DETAIL",
+      payload: {
+        id: action.payload.geo,
+        detail: geoDetail
+      }
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 export function* geoSaga(): Saga<void> {
   yield takeLatest("GET_GEO_LIST", fetchGeoList);
+  yield takeLatest("GET_GEO_DETAIL", fetchGeoDetail);
 }
