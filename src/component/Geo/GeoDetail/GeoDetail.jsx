@@ -1,40 +1,70 @@
 // @flow
 import * as React from "react";
+import GeoSummary from "../GeoSummary/GeoSummary";
 import IncomeReport from "../IncomeReport/IncomeReport";
 
-import type { GeoDetail as GeoDetailType, State } from "../../../type/GeoType";
+import type {
+  GeoDetail as GeoDetailType,
+  State as StateType
+} from "../../../type/GeoType";
+
+import styles from "./GeoDetail.css";
 
 type Props = {
-  place: State,
-  detail?: GeoDetailType,
+  place: StateType,
+  detail: GeoDetailType,
+  usDetail: GeoDetailType,
   onFetchDetail: (
     type: string,
     required: Array<string>,
     sumlevel: string | null,
     year: Array<number> | null,
     geo: string
-  ) => void
+  ) => void,
+  onFetchAttribute: (id: string, name: string) => void
 };
 
-const GeoDetail = ({ place, detail, onFetchDetail }: Props) => {
-  const incomeVisual = () => {
-    const required = ["income", "income_moe"];
-    if (detail.income) {
-      return <IncomeReport income={detail.income} />;
-    } else {
-      onFetchDetail("income", required, null, null, place.id);
-    }
+type State = {};
+
+class GeoDetail extends React.Component<Props, State> {
+  componentDidMount() {
+    this.fetchAttr();
+  }
+
+  fetchAttr = () => {
+    this.props.onFetchAttribute(this.props.place.id, this.props.place.display);
   };
-  return (
-    <React.Fragment>
-      {place && place.display && <h1>{place.display}</h1>}
-      {incomeVisual()}
-    </React.Fragment>
-  );
-};
 
-GeoDetail.defaultProps = {
-  detail: {}
-};
+  renderSummary = () => {
+    const { detail, place } = this.props;
+    return detail ? <GeoSummary geo={place} detail={detail} /> : "";
+  };
+
+  renderEconomySection = () => {
+    const { usDetail, detail, place, onFetchDetail } = this.props;
+    return (
+      <article className={styles.economySection}>
+        <h1 className={styles.economyTitle}>Economy</h1>
+        {
+          <IncomeReport
+            detail={detail}
+            usDetail={usDetail}
+            place={place}
+            fetchDetail={onFetchDetail}
+          />
+        }
+      </article>
+    );
+  };
+
+  render() {
+    return (
+      <div className={styles.detailContainer}>
+        {this.renderSummary()}
+        {this.renderEconomySection()}
+      </div>
+    );
+  }
+}
 
 export default GeoDetail;

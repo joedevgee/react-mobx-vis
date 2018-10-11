@@ -58,21 +58,34 @@ const getGeoDetail = async (payload: {
     }&geo=${payload.geo}`
   );
   const data = await resp.json();
-  const geoDetail = {};
+  // const geoDetail = {};
   switch (payload.type) {
     case "income":
       // Set income for detail
-      geoDetail.income = incomeDataHelper(data);
-      break;
+      // geoDetail.income = incomeDataHelper(data);
+      return { income: incomeDataHelper(data) };
     default:
       console.error("The type is not specified: ", payload.type);
   }
-  return geoDetail;
+  // return geoDetail;
+};
+
+const getGeoAttribute = async (payload: { id: string }) => {
+  const resp = await fetch(`${apiUrl}/attrs/geo/${payload.id}`);
+  const data = await resp.json();
+  const attr = {
+    id: data.data[0][8],
+    fullName: data.data[0][9],
+    imageLink: data.data[0][3],
+    imageAuthor: data.data[0][6]
+  };
+  return attr;
 };
 
 const GeoApi = {
   getStates,
-  getGeoDetail
+  getGeoDetail,
+  getGeoAttribute
 };
 
 export default GeoApi;

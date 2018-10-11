@@ -4,9 +4,10 @@ import GeoDetail from "./GeoDetail.jsx";
 
 describe("<GeoDetail />", () => {
   it("renders without crashing", () => {
-    const mockState = {
-      display: "state"
+    const props = {
+      place: {},
+      onFetchDetail: () => {}
     };
-    shallow(<GeoDetail geo={mockState} />);
+    shallow(<GeoDetail {...props} />);
   });
 });

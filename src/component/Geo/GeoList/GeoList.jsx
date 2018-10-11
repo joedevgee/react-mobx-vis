@@ -26,8 +26,11 @@ const GeoList = ({ match, list }: Props) => {
   };
   const renderGeoItem = (location: State) => {
     return (
-      <li key={location.urlName} className={styles.listInnerWrapper}>
-        <Link to={`${match.url}/${location.urlName}`}>
+      <li key={location.urlName}>
+        <Link
+          to={`${match.url}/${location.urlName}`}
+          className={styles.listInnerWrapper}
+        >
           <span className={styles.iconWrapper}>
             <Icon type="environment" theme="outlined" />
           </span>

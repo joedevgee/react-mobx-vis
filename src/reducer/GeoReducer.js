@@ -1,9 +1,17 @@
 // @flow
 import type { GeoAction } from "../action/GeoAction";
 import type { GeoStore, GeoDetail } from "../type/GeoType";
+import { GeoConstant } from "../constant";
 
 const geoReducer = (
-  state: GeoStore = { stateList: [], detailList: [] },
+  state: GeoStore = {
+    stateList: [],
+    detailList: [
+      {
+        id: GeoConstant.US_GEO
+      }
+    ]
+  },
   action: GeoAction
 ): GeoStore => {
   switch (action.type) {
@@ -18,7 +26,7 @@ const geoReducer = (
       const filtered = state.detailList.filter(s => s.id === payload.id);
       if (filtered.length > 0) {
         newDetailList = state.detailList.map(
-          s => (s.id === payload.id ? { ...s, ...payload.detail } : s)
+          s => (s.id === payload.id ? { ...s, ...payload } : s)
         );
       } else {
         newDetailList = [...state.detailList, ...[payload]];

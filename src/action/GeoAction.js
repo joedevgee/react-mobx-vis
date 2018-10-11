@@ -36,11 +36,20 @@ type SetGeoDetailAction = {
   }
 };
 
+type GetGeoAttributeAction = {
+  type: "GET_GEO_ATTRIBUTE",
+  payload: {
+    id: string,
+    name: string
+  }
+};
+
 export type GeoAction =
   | GetGeoListAction
   | SetStateListAction
   | GetGeoDetailAction
-  | SetGeoDetailAction;
+  | SetGeoDetailAction
+  | GetGeoAttributeAction;
 
 /**
  * Action to fetch a list of Geo locations. e.g. States, Metros
@@ -100,5 +109,20 @@ export const setGeoDetail = (
   payload: {
     id: id,
     detail: detail
+  }
+});
+
+/**
+ *
+ * @param {*} id
+ */
+export const getGeoAttribute = (
+  id: string,
+  name: string
+): GetGeoAttributeAction => ({
+  type: "GET_GEO_ATTRIBUTE",
+  payload: {
+    id: id,
+    name: name
   }
 });
