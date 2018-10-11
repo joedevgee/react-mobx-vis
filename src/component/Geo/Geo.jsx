@@ -3,8 +3,13 @@ import * as React from "react";
 import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { getGeoList, getGeoDetail } from "../../action/GeoAction";
+import {
+  getGeoList,
+  getGeoDetail,
+  getGeoAttribute
+} from "../../action/GeoAction";
 import GeoList from "./GeoList/GeoList";
+import { GeoConstant } from "../../constant";
 import GeoDetail from "./GeoDetail/GeoDetail.jsx";
 import type { GeoStore } from "../../type/GeoType";
 import type { Match } from "../../type/RouterType";
@@ -19,16 +24,16 @@ type Props = {
     sumlevel: string | null,
     year: Array<number> | null,
     geo: string
-  ) => void
+  ) => void,
+  onFetchGeoAttr: (id: string) => void
 };
 
 type State = {};
 
 export class Geo extends React.Component<Props, State> {
   componentDidMount() {
-    console.info("<Geo /> did mount");
     // Fetch list for states
-    this.props.onFetchStates(100, "040");
+    this.props.onFetchStates(100, GeoConstant.GEO_STATE_CATEGORY);
   }
 
   renderStateList = ({ match }: any) => (
@@ -42,24 +47,28 @@ export class Geo extends React.Component<Props, State> {
       const selectedDetail = this.props.store.detailList.filter(
         d => d.id === selectedState.id
       )[0];
+      const usDetail = this.props.store.detailList.filter(
+        d => d.id === GeoConstant.US_GEO
+      )[0];
       return selectedState ? (
         <GeoDetail
           place={selectedState}
           detail={selectedDetail}
+          usDetail={usDetail}
           onFetchDetail={this.props.onFetchStateDetail}
+          onFetchAttribute={this.props.onFetchGeoAttr}
         />
       ) : (
         ""
       );
     } catch (err) {
-      console.error("Failed to render <GeoDetail />: ", err);
+      return "Loading";
     }
   };
 
   render() {
     return (
       <React.Fragment>
-        <p>Geo</p>
         <Switch>
           <Route
             exact
@@ -76,19 +85,28 @@ export class Geo extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = ({ GeoStore }) => {
+const mapStateToProps = (state: { geoStore: GeoStore }) => {
   return {
-    store: GeoStore
+    store: state.geoStore
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onFetchStates: (limit, sumlevel) => {
+    onFetchStates: (limit: number, sumlevel: string) => {
       dispatch(getGeoList(limit, sumlevel));
     },
-    onFetchStateDetail: (type, required, sumlevel, year, geo) => {
+    onFetchStateDetail: (
+      type: "income",
+      required: Array<string>,
+      sumlevel: string,
+      year: Array<number> | null,
+      geo: string
+    ) => {
       dispatch(getGeoDetail(type, required, sumlevel, year, geo));
+    },
+    onFetchGeoAttr: (id: string, name: string) => {
+      dispatch(getGeoAttribute(id, name));
     }
   };
 };

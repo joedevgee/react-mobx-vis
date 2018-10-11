@@ -1,7 +1,6 @@
 {
   "presets": ["react-app"],
   "plugins": [
-    "transform-decorators-legacy",
     [
       "import",
       {
@@ -9,6 +8,7 @@
         "libraryDirectory": "es",
         "style": "css"
       }
-    ]
+    ],
+    "recharts"
   ]
 }

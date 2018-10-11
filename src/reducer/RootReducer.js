@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import GeoReducer from "./GeoReducer";
 
 const rootReducer = combineReducers({
-  GeoStore: GeoReducer
+  geoStore: GeoReducer
 });
 
 export default rootReducer;

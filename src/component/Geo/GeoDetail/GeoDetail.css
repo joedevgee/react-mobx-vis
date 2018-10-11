@@ -1,0 +1,12 @@
+.detailContainer {
+  background-color: #e9e9e9;
+}
+
+.economySection {
+  padding: 2vh 2vw;
+  min-height: 50vh;
+}
+
+.economyTitle {
+  font-size: 7vh;
+}

@@ -1,11 +1,10 @@
-// @flow
-import { call, put, takeLatest } from "redux-saga/effects";
-import type { Saga } from "redux-saga";
+import { call, put, takeLatest, all } from "redux-saga/effects";
 
 import GeoApi from "../api/GeoApi";
-import type { GeoAction } from "../action/GeoAction";
+import UnsplashApi from "../api/UnSplashApi";
+import { GeoConstant } from "../constant";
 
-function* fetchGeoList(action: GeoAction): Saga<void> {
+function* fetchGeoList(action) {
   try {
     const stateList = yield call(GeoApi.getStates, action.payload);
     yield put({
@@ -19,14 +18,45 @@ function* fetchGeoList(action: GeoAction): Saga<void> {
   }
 }
 
-function* fetchGeoDetail(action: GeoAction): Saga<void> {
+function* fetchGeoDetail(action) {
   try {
     const geoDetail = yield call(GeoApi.getGeoDetail, action.payload);
+    /**
+     * For comparison purpose
+     * Also fetch same detail for U.S. as a whole
+     */
+    const usPayload = { ...action.payload, geo: GeoConstant.US_GEO };
+    const usGeoDetail: GeoDetail = yield call(GeoApi.getGeoDetail, usPayload);
+    yield all([
+      put({
+        type: "SET_GEO_DETAIL",
+        payload: {
+          id: action.payload.geo,
+          ...geoDetail
+        }
+      }),
+      put({
+        type: "SET_GEO_DETAIL",
+        payload: {
+          id: usPayload.geo,
+          ...usGeoDetail
+        }
+      })
+    ]);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function* fetchGeoAttribute(action) {
+  try {
+    // const geoAttr = yield call(GeoApi.getGeoAttribute, action.payload);
+    const images = yield call(UnsplashApi.getRandomPhoto, action.payload.name);
     yield put({
       type: "SET_GEO_DETAIL",
       payload: {
-        id: action.payload.geo,
-        detail: geoDetail
+        id: action.payload.id,
+        attribute: images
       }
     });
   } catch (err) {
@@ -34,7 +64,8 @@ function* fetchGeoDetail(action: GeoAction): Saga<void> {
   }
 }
 
-export function* geoSaga(): Saga<void> {
+export function* geoSaga() {
   yield takeLatest("GET_GEO_LIST", fetchGeoList);
   yield takeLatest("GET_GEO_DETAIL", fetchGeoDetail);
+  yield takeLatest("GET_GEO_ATTRIBUTE", fetchGeoAttribute);
 }

@@ -12,9 +12,23 @@ export type GeoIncome = Array<{
   incomeMoe: number
 }>;
 
+export type GeoAttribute = {
+  id: string,
+  fullName: string,
+  rawImageLink: string,
+  fullImageLink: string,
+  regularImageLink: string,
+  smallImageLink: string,
+  thumbImageLink: string,
+  imageDescription: string,
+  imageAuthorProfileLink: string,
+  imageAuthor: string
+};
+
 export type GeoDetail = {
   id: string,
-  income: GeoIncome
+  income?: GeoIncome,
+  attribute?: GeoAttribute
 };
 
 export type State = {

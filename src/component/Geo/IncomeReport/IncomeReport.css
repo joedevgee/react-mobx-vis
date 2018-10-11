@@ -1,0 +1,12 @@
+.incomeWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
+}
+
+.header h3 {
+  font-size: 3vh;
+}
