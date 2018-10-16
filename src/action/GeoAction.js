@@ -20,11 +20,7 @@ type SetStateListAction = {
 type GetGeoDetailAction = {
   type: "GET_GEO_DETAIL",
   payload: {
-    type: "income",
-    required: Array<string>,
-    sumlevel: string,
-    year: Array<number> | null,
-    geo: string
+    [string]: string | number
   }
 };
 
@@ -74,28 +70,11 @@ export const setStateList = (stateList: LocationList): SetStateListAction => ({
   }
 });
 
-/**
- * Action to fetch detail of a specific geo location. e.g. California, New York
- * @param {[string]} required [A list of params to include in the response]
- * @param {string} sumlevel [e.g. "040" = State level]
- * @param {[number]} year [e.g. [2011, 2012, 2013]. P.S. default is All]
- * @param {string} geo [ID for the location, e.g. California = 04000US06]
- */
-export const getGeoDetail = (
-  type: "income",
-  required: Array<string>,
-  sumlevel: string,
-  year: Array<number> | null,
-  geo: string
-): GetGeoDetailAction => ({
+export const getGeoDetail = (payload: {
+  [string]: string | number
+}): GetGeoDetailAction => ({
   type: "GET_GEO_DETAIL",
-  payload: {
-    type: type,
-    required: required,
-    sumlevel: sumlevel,
-    year: year,
-    geo: geo
-  }
+  payload
 });
 
 /**

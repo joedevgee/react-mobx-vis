@@ -3,11 +3,12 @@ import { shallow } from "enzyme";
 import GeoDetail from "./GeoDetail.jsx";
 
 describe("<GeoDetail />", () => {
+  const defaultProps = {
+    place: {},
+    onFetchDetail: () => {},
+    onFetchAttribute: () => {}
+  };
   it("renders without crashing", () => {
-    const props = {
-      place: {},
-      onFetchDetail: () => {}
-    };
-    shallow(<GeoDetail {...props} />);
+    shallow(<GeoDetail {...defaultProps} />);
   });
 });

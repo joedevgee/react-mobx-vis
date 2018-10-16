@@ -12,6 +12,14 @@ export type GeoIncome = Array<{
   incomeMoe: number
 }>;
 
+export type GeoOccupation = Array<{
+  year: number,
+  geo: string,
+  avgWage: number,
+  numEmployee: number,
+  name: string
+}>;
+
 export type GeoAttribute = {
   id: string,
   fullName: string,
@@ -28,6 +36,7 @@ export type GeoAttribute = {
 export type GeoDetail = {
   id: string,
   income?: GeoIncome,
+  occupation?: GeoOccupation,
   attribute?: GeoAttribute
 };
 

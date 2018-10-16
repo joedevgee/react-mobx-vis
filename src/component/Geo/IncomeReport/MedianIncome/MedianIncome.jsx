@@ -10,12 +10,12 @@ import {
 } from "recharts";
 import { Row, Col } from "antd";
 import { currencyFormatter } from "../../../../util";
-import type { GeoIncome } from "../../../type/GeoType";
+import type { GeoIncome } from "../../../../type/GeoType";
 
 import styles from "./MedianIncome.css";
 
 type Props = {
-  usIncome: GeoIncome,
+  usIncome?: GeoIncome,
   income: GeoIncome,
   displayName: string
 };
@@ -23,9 +23,10 @@ type Props = {
 const MedianIncome = ({ usIncome, income, displayName }: Props) => {
   const data = () =>
     income.map(i => {
-      const [matchedUsIncome] = usIncome
-        ? usIncome.filter(u => u.year === i.year)
-        : [{}];
+      const [matchedUsIncome] =
+        usIncome && usIncome.length > 0
+          ? usIncome.filter(u => u.year === i.year)
+          : [{}];
       return { ...i, usIncome: matchedUsIncome.income };
     });
 
@@ -39,7 +40,7 @@ const MedianIncome = ({ usIncome, income, displayName }: Props) => {
     return (
       <div>
         <div>
-          <h4>Median Household Income: </h4>
+          <h2>Median Household Income: </h2>
           <div>
             <h4>{formatIncome}</h4>
           </div>
@@ -109,6 +110,10 @@ const MedianIncome = ({ usIncome, income, displayName }: Props) => {
       </Col>
     </Row>
   );
+};
+
+MedianIncome.defaultProps = {
+  usIncome: []
 };
 
 export default MedianIncome;
