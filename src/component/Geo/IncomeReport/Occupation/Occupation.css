@@ -1,0 +1,11 @@
+.occupationContainer {
+  margin-top: 10vh;
+}
+
+.chartContainer {
+  min-height: 30vh;
+}
+
+.labelText {
+  font: 3vw;
+}

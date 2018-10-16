@@ -1,1 +1,1 @@
-Data Visualization based on React & MobX
+Data Visualization based on React & Redux

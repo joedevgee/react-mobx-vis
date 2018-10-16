@@ -2,9 +2,6 @@
   background-color: #141b2e;
 }
 
-.sider {
-}
-
 .header {
   padding: 0;
   background-color: #141b2e;
@@ -32,7 +29,5 @@
 }
 
 .content {
-  padding: 0 2vw;
-  margin-top: 5vh;
-  min-height: 90vh;
+  min-height: 99vh;
 }

@@ -18,13 +18,7 @@ type Props = {
   match: Match,
   store: GeoStore,
   onFetchStates: (limit: number, sumlevel: string) => void,
-  onFetchStateDetail: (
-    type: string,
-    required: Array<string>,
-    sumlevel: string | null,
-    year: Array<number> | null,
-    geo: string
-  ) => void,
+  onFetchStateDetail: () => {},
   onFetchGeoAttr: (id: string) => void
 };
 
@@ -96,14 +90,8 @@ const mapDispatchToProps = dispatch => {
     onFetchStates: (limit: number, sumlevel: string) => {
       dispatch(getGeoList(limit, sumlevel));
     },
-    onFetchStateDetail: (
-      type: "income",
-      required: Array<string>,
-      sumlevel: string,
-      year: Array<number> | null,
-      geo: string
-    ) => {
-      dispatch(getGeoDetail(type, required, sumlevel, year, geo));
+    onFetchStateDetail: (payload: { [string]: string | number }) => {
+      dispatch(getGeoDetail(payload));
     },
     onFetchGeoAttr: (id: string, name: string) => {
       dispatch(getGeoAttribute(id, name));

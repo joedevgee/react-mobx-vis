@@ -14,13 +14,7 @@ type Props = {
   place: StateType,
   detail: GeoDetailType,
   usDetail: GeoDetailType,
-  onFetchDetail: (
-    type: string,
-    required: Array<string>,
-    sumlevel: string | null,
-    year: Array<number> | null,
-    geo: string
-  ) => void,
+  onFetchDetail: () => {},
   onFetchAttribute: (id: string, name: string) => void
 };
 
