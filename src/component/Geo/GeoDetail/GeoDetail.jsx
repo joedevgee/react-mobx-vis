@@ -38,7 +38,7 @@ class GeoDetail extends React.Component<Props, State> {
     const { usDetail, detail, place, onFetchDetail } = this.props;
     return (
       <article className={styles.economySection}>
-        <h1 className={styles.economyTitle}>Economy</h1>
+        <h1 className={styles.economyTitle}>Wages</h1>
         {
           <IncomeReport
             detail={detail}

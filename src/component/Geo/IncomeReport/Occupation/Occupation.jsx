@@ -32,14 +32,6 @@ const Occupation = ({ occupation, name }: Props) => {
     return (
       <div>
         <h2>Income by Occupations</h2>
-        <p>
-          The highest paying jobs in {name}
-          <ul>
-            {occupation.map(o => (
-              <li>{o.name}</li>
-            ))}
-          </ul>
-        </p>
       </div>
     );
   };

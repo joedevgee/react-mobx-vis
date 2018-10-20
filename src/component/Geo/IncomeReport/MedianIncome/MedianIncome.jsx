@@ -39,12 +39,19 @@ const MedianIncome = ({ usIncome, income, displayName }: Props) => {
     const formatIncome = usdFormatter(latestIncome.income);
     return (
       <div>
-        <div>
-          <h2>Median Household Income: </h2>
-          <div>
-            <h4>{formatIncome}</h4>
+        <header className={styles.titleContainer}>
+          <h3 className={styles.titleHeader}>Median Household Income</h3>
+          <div className={styles.titleData}>
+            <h1 className={styles.titleIncome}>{formatIncome}</h1>
+            <div className={styles.titleSub}>
+              <p>
+                <span className={styles.moeSign}>±</span>
+                {usdFormatter(latestIncome.incomeMoe)}
+              </p>
+              <p>as of {latestIncome.year}</p>
+            </div>
           </div>
-        </div>
+        </header>
         <p>
           Households in {displayName} have a median annual income of{" "}
           {formatIncome}, which is{" "}
@@ -58,14 +65,17 @@ const MedianIncome = ({ usIncome, income, displayName }: Props) => {
   };
 
   const usdFormatter = (value: number): string =>
-    `$${currencyFormatter(value)}`;
+    `$ ${currencyFormatter(value)}`;
 
   return (
     <Row type="flex" justify="space-between">
-      <Col xs={24} sm={24} md={10} lg={10} xl={10} xxl={10}>
+      <Col xs={24} sm={24} md={8} lg={8} xl={8} xxl={8}>
         {renderIncomeIntro()}
       </Col>
-      <Col xs={24} sm={24} md={13} lg={13} xl={13} xxl={13}>
+      <Col xs={24} sm={24} md={15} lg={15} xl={15} xxl={15}>
+        <div>
+          <
+        </div>
         <ResponsiveContainer
           className={styles.chartContainer}
           width="100%"

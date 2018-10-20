@@ -1,3 +1,33 @@
+.titleContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleHeader {
+  font-weight: bold;
+}
+
+.titleData {
+  display: flex;
+  flex-direction: row;
+  align-items: last baseline;
+}
+
+.titleIncome {
+  font-size: 50px;
+  margin-right: 20px;
+}
+
+.titleSub {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.moeSign {
+  color: #ef6145;
+  margin-right: 5px;
+}
+
 .chartContainer {
-  min-height: 30vh;
+  min-height: 40vh;
 }

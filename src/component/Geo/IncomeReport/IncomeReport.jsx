@@ -42,7 +42,7 @@ const IncomeReport = ({ detail, usDetail, place, fetchDetail }: Props) => {
       const payload = {
         show: "geo,soc",
         geo: place.id,
-        required: "num_ppl,num_ppl_moe,avg_wage,avg_wage_moe",
+        required: "num_ppl,avg_wage,avg_age",
         year: "2016",
         limit: "5",
         sort: "desc",
