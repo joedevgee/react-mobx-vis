@@ -12,6 +12,7 @@ import { Row, Col } from "antd";
 import { currencyFormatter } from "../../../../util";
 import type { GeoIncome } from "../../../../type/GeoType";
 
+import IncomeChart from './IncomeChart'
 import styles from "./MedianIncome.css";
 
 type Props = {
@@ -73,10 +74,8 @@ const MedianIncome = ({ usIncome, income, displayName }: Props) => {
         {renderIncomeIntro()}
       </Col>
       <Col xs={24} sm={24} md={15} lg={15} xl={15} xxl={15}>
-        <div>
-          <
-        </div>
-        <ResponsiveContainer
+        <IncomeChart targetIncome={income} nationalIncome={usIncome || []} />
+        {/* <ResponsiveContainer
           className={styles.chartContainer}
           width="100%"
           height="100%"
@@ -116,7 +115,7 @@ const MedianIncome = ({ usIncome, income, displayName }: Props) => {
               fill="url(#colorGeoIncome)"
             />
           </AreaChart>
-        </ResponsiveContainer>
+        </ResponsiveContainer> */}
       </Col>
     </Row>
   );

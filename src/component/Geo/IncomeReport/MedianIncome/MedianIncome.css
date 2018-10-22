@@ -10,7 +10,7 @@
 .titleData {
   display: flex;
   flex-direction: row;
-  align-items: last baseline;
+  align-items: center;
 }
 
 .titleIncome {
