@@ -1,0 +1,7 @@
+.largeBtnGroup {
+  float: right;
+}
+
+.largeBtnGroup > button {
+  line-height: 1.5 !important;
+}

@@ -8,7 +8,6 @@
         "libraryDirectory": "es",
         "style": "css"
       }
-    ],
-    "recharts"
+    ]
   ]
 }

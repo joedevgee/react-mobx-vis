@@ -16,27 +16,6 @@ type Props = {
 };
 
 const IncomeReport = ({ detail, usDetail, place, fetchDetail }: Props) => {
-  const renderMedianIncome = () => {
-    if (!detail || !detail.income || detail.income.length === 0) {
-      const payload = {
-        show: "geo",
-        geo: place.id,
-        required: "income,income_moe",
-        year: "all",
-        type: "income"
-      };
-      fetchDetail(payload);
-    } else {
-      return (
-        <MedianIncome
-          usIncome={usDetail.income}
-          income={detail.income}
-          displayName={place.display}
-        />
-      );
-    }
-  };
-
   const renderWageOccupation = () => {
     if (!detail || !detail.occupation || detail.occupation.length === 0) {
       const payload = {
@@ -58,7 +37,15 @@ const IncomeReport = ({ detail, usDetail, place, fetchDetail }: Props) => {
 
   return (
     <React.Fragment>
-      <section className={styles.incomeWrapper}>{renderMedianIncome()}</section>
+      <section className={styles.incomeWrapper}>
+        <MedianIncome
+          usIncome={usDetail && usDetail.income ? usDetail.income : []}
+          income={detail && detail.income ? detail.income : []}
+          displayName={place.display}
+          geoId={place.id}
+          fetchDetail={fetchDetail}
+        />
+      </section>
       <section>{renderWageOccupation()}</section>
     </React.Fragment>
   );

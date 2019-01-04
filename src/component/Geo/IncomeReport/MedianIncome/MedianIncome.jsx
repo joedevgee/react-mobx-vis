@@ -1,43 +1,50 @@
 // @flow
 import * as React from "react";
-import {
-  AreaChart,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Area,
-  ResponsiveContainer
-} from "recharts";
-import { Row, Col } from "antd";
+import { Row, Col, Table } from "antd";
+import { Chart, Geom, Axis, Tooltip, Legend } from "bizcharts";
+import DataOptions from "../../../DataOptions/DataOptions";
 import { currencyFormatter } from "../../../../util";
+import { GeoConstant } from "../../../../constant";
 import type { GeoIncome } from "../../../../type/GeoType";
 
-import IncomeChart from './IncomeChart'
 import styles from "./MedianIncome.css";
 
 type Props = {
-  usIncome?: GeoIncome,
+  usIncome: GeoIncome,
   income: GeoIncome,
-  displayName: string
+  displayName: string,
+  geoId: string,
+  fetchDetail: (payload: { [string]: string | number }) => void
 };
 
-const MedianIncome = ({ usIncome, income, displayName }: Props) => {
-  const data = () =>
-    income.map(i => {
-      const [matchedUsIncome] =
-        usIncome && usIncome.length > 0
-          ? usIncome.filter(u => u.year === i.year)
-          : [{}];
-      return { ...i, usIncome: matchedUsIncome.income };
-    });
+type State = {
+  chartInstance: any
+};
 
-  const renderIncomeIntro = () => {
+class MedianIncome extends React.Component<Props, State> {
+  state = {
+    chartInstance: {}
+  };
+  componentDidMount() {
+    const { usIncome, income, geoId, fetchDetail } = this.props;
+    if (usIncome.length === 0 || income.length === 0) {
+      const payload = {
+        show: "geo",
+        geo: geoId,
+        required: "income,income_moe",
+        year: "all",
+        type: "income"
+      };
+      fetchDetail(payload);
+    }
+  }
+  renderIncomeIntro = () => {
+    const { usIncome, income, displayName } = this.props;
     const [latestIncome] = income.slice(-1);
     const [latestUsIncome] = usIncome ? usIncome.slice(-1) : [{}];
-    if (!latestIncome || !latestUsIncome) {
-      return "";
-    }
-    const formatIncome = usdFormatter(latestIncome.income);
+    const formatIncome = this.usdFormatter(
+      latestIncome ? latestIncome.income : 0
+    );
     return (
       <div>
         <header className={styles.titleContainer}>
@@ -47,82 +54,133 @@ const MedianIncome = ({ usIncome, income, displayName }: Props) => {
             <div className={styles.titleSub}>
               <p>
                 <span className={styles.moeSign}>±</span>
-                {usdFormatter(latestIncome.incomeMoe)}
+                {this.usdFormatter(latestIncome ? latestIncome.incomeMoe : 0)}
               </p>
-              <p>as of {latestIncome.year}</p>
+              <p>as of {latestIncome ? latestIncome.year : 0}</p>
             </div>
           </div>
         </header>
         <p>
           Households in {displayName} have a median annual income of{" "}
           {formatIncome}, which is{" "}
-          {latestIncome.income > latestUsIncome.income ? "more" : "less"} than
-          the median annual income in the United States. Look at the chart to
-          see how the median household income in {displayName} compares to the
-          national.
+          {latestIncome &&
+          latestUsIncome &&
+          latestIncome.income > latestUsIncome.income
+            ? "more"
+            : "less"}{" "}
+          than the median annual income in the United States. Look at the chart
+          to see how the median household income in {displayName} compares to
+          the national.
         </p>
       </div>
     );
   };
 
-  const usdFormatter = (value: number): string =>
-    `$ ${currencyFormatter(value)}`;
+  renderDataTable = () => {
+    const { usIncome, income, displayName } = this.props;
+    const dataSource = income.map(t => ({
+      ...t,
+      usIncome: (usIncome.filter(k => k.year === t.year)[0] || {}).income
+    }));
+    const sorter = (a: { year: number }, b: { year: number }) =>
+      a.year - b.year;
+    const columns = [
+      {
+        title: "Year",
+        dataIndex: "year",
+        sorter: sorter
+      },
+      {
+        title: displayName,
+        dataIndex: "income",
+        render: this.usdFormatter
+      },
+      {
+        title: "National",
+        dataIndex: "usIncome",
+        render: this.usdFormatter
+      }
+    ];
+    return (
+      <Table
+        rowKey="year"
+        pagination={false}
+        dataSource={dataSource}
+        columns={columns}
+      />
+    );
+  };
 
-  return (
-    <Row type="flex" justify="space-between">
-      <Col xs={24} sm={24} md={8} lg={8} xl={8} xxl={8}>
-        {renderIncomeIntro()}
-      </Col>
-      <Col xs={24} sm={24} md={15} lg={15} xl={15} xxl={15}>
-        <IncomeChart targetIncome={income} nationalIncome={usIncome || []} />
-        {/* <ResponsiveContainer
-          className={styles.chartContainer}
-          width="100%"
-          height="100%"
-        >
-          <AreaChart data={data()}>
-            <defs>
-              <linearGradient id="colorUsIncome" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id="colorGeoIncome" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <XAxis dataKey="year" />
-            <YAxis
-              scale="log"
-              domain={["dataMin - 5000", "dataMax + 5000"]}
-              tickFormatter={usdFormatter}
-            />
-            <Tooltip formatter={usdFormatter} />
-            <Area
-              name="U.S."
-              type="monotone"
-              dataKey="usIncome"
-              stroke="#8884d8"
-              fillOpacity={1}
-              fill="url(#colorUsIncome)"
-            />
-            <Area
-              name={`${displayName}`}
-              type="monotone"
-              dataKey="income"
-              stroke="#82ca9d"
-              fillOpacity={1}
-              fill="url(#colorGeoIncome)"
-            />
-          </AreaChart>
-        </ResponsiveContainer> */}
-      </Col>
-    </Row>
-  );
-};
+  renderIncomeChart = () => {
+    const { usIncome, income, displayName } = this.props;
+    const sourceData = [...income, ...usIncome].map(d => ({
+      ...d,
+      geo: d.geo === GeoConstant.US_GEO ? "National" : displayName
+    }));
+    const cols = {
+      year: {
+        alias: `${displayName} median household income`,
+        type: "linear",
+        tickInterval: 1
+      },
+      income: {
+        alias: "Median Income",
+        formatter: this.usdFormatter
+      }
+    };
+    const axisLine = {
+      stroke: "#CCC",
+      fill: "#FFF",
+      lineWidth: 1
+    };
+    const axisLabel = {
+      textStyle: {
+        textAlign: "end",
+        fontSize: "8"
+      }
+    };
+    return (
+      <Chart
+        renderer="svg"
+        data={sourceData}
+        scale={cols}
+        height={400}
+        forceFit
+        onGetG2Instance={chartIns => this.setState({ chartInstance: chartIns })}
+      >
+        <DataOptions
+          chartInstance={this.state.chartInstance}
+          title={`${displayName} median household income`}
+          dataTable={this.renderDataTable()}
+        />
+        <Axis name="year" line={axisLine} title="Median household income" />
+        <Axis name="income" line={axisLine} label={axisLabel} />
+        <Legend />
+        <Tooltip
+          crosshairs={{
+            type: "cross"
+          }}
+        />
+        <Geom type="area" position="year*income" color="geo" />
+        <Geom type="line" position="year*income" size={1} color="geo" />
+      </Chart>
+    );
+  };
 
-MedianIncome.defaultProps = {
-  usIncome: []
-};
+  usdFormatter = (value: number): string => `$ ${currencyFormatter(value)}`;
+
+  render() {
+    return (
+      <Row type="flex" justify="space-between">
+        <Col xs={24} sm={24} md={8} lg={8} xl={8} xxl={8}>
+          {this.renderIncomeIntro()}
+        </Col>
+        <Col xs={24} sm={24} md={15} lg={15} xl={15} xxl={15}>
+          {this.renderIncomeChart()}
+        </Col>
+      </Row>
+    );
+  }
+}
 
 export default MedianIncome;
